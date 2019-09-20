@@ -4,7 +4,12 @@ var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
 var width = canvas.width = window.innerWidth;
+
 var height = canvas.height = window.innerHeight;
+
+let count = document.querySelector('p'); // Selects the <p>
+
+let ballNum = 0; // Keeps count of the number of balls
 
 // function to generate random number
 
@@ -36,8 +41,8 @@ class EvilCircle extends Shape {
         super(x, y, velX, velY, exists);
         this.velX = 20;
         this.velY = 20;
-        this.color = 'white';
-        this.size = 10;
+        this.color = color;
+        this.size = size;
     }
 }
 
@@ -79,27 +84,27 @@ Ball.prototype.update = function () {
 
 EvilCircle.prototype.checkBounds = function () {
     if ((this.x + this.size) >= width) {
-        this.x = -10;
+        this.x -= -this.size;
     }
 
     if ((this.x - this.size) <= 0) {
-        this.x = -10;
+        this.x += this.size;
     }
 
     if ((this.y + this.size) >= height) {
-        this.y = -10;
+        this.y -= this.size;
     }
 
     if ((this.y - this.size) <= 0) {
-        this.y = -10;
+        this.y += this.size;
     }
 }
 
 EvilCircle.prototype.setControls = function () {
     var _this = this;
     window.onkeydown = function (e) {
-        if (e.keyCode === 65 || e.keyCode === 37) { // Added AWSD or Arrow Key controls
-            _this.x -= _this.velX;
+        if (e.keyCode === 65 || e.keyCode === 37) { // Added WASD or Arrow Key controls
+            _this.x = _this.x - _this.velX;
         } else if (e.keyCode === 68 || e.keyCode === 39) {
             _this.x += _this.velX;
         } else if (e.keyCode === 87 || e.keyCode === 38) {
@@ -133,6 +138,7 @@ EvilCircle.prototype.collisionDetect = function () {
 
             if (distance < this.size + balls[j].size) {
                 balls[j].exists = false;
+                ballNum--;
             }
         }
     }
@@ -155,16 +161,19 @@ while (balls.length < 25) { // Change to add more balls
     );
 
     balls.push(ball);
+    ballNum++;
 }
 
+var evilCircle = new EvilCircle(700, 400, 20, 20, true, 'red', 10);
+evilCircle.setControls();
+
 function loop() {
-    var evilCircle = new EvilCircle(50, 50, 0, 0, true, 'blue', 10);
-    evilCircle.setControls();
+
     ctx.fillStyle = 'rgba(0, 0, 0, 0.25)'; // Can change transparency level to affect the tail
     ctx.fillRect(0, 0, width, height);
 
     for (var i = 0; i < balls.length; i++) {
-        if (balls[i].exists === true) {
+        if (balls[i].exists) {
             balls[i].draw();
             balls[i].update();
             balls[i].collisionDetect();
@@ -174,6 +183,7 @@ function loop() {
         evilCircle.collisionDetect();
     }
 
+    count.innerHTML = `Ball Count: ${ballNum}`;
     requestAnimationFrame(loop);
 }
 
