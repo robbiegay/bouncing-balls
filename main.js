@@ -6,6 +6,10 @@ var ctx = canvas.getContext('2d');
 var width = canvas.width = window.innerWidth;
 var height = canvas.height = window.innerHeight;
 
+let count = document.querySelector('p'); // Selects the <p>
+
+let ballNum = 0; // Keeps count of the number of balls
+
 // function to generate random number
 
 function random(min, max) {
@@ -36,7 +40,7 @@ class EvilCircle extends Shape {
         super(x, y, velX, velY, exists);
         this.velX = 20;
         this.velY = 20;
-        this.color = 'white';
+        this.color = 'red';
         this.size = 10;
     }
 }
@@ -133,6 +137,7 @@ EvilCircle.prototype.collisionDetect = function () {
 
             if (distance < this.size + balls[j].size) {
                 balls[j].exists = false;
+                ballNum --;
             }
         }
     }
@@ -155,10 +160,11 @@ while (balls.length < 25) { // Change to add more balls
     );
 
     balls.push(ball);
+    ballNum ++;
 }
 
 function loop() {
-    var evilCircle = new EvilCircle(50, 50, 0, 0, true, 'blue', 10);
+    var evilCircle = new EvilCircle(700, 400, 0, 0, true, 'blue', 10);
     evilCircle.setControls();
     ctx.fillStyle = 'rgba(0, 0, 0, 0.25)'; // Can change transparency level to affect the tail
     ctx.fillRect(0, 0, width, height);
@@ -173,7 +179,7 @@ function loop() {
         evilCircle.checkBounds();
         evilCircle.collisionDetect();
     }
-
+    count.innerHTML = `Ball Count: ${ballNum}`;
     requestAnimationFrame(loop);
 }
 
