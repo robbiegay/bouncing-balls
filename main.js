@@ -84,7 +84,7 @@ Ball.prototype.update = function () {
 
 EvilCircle.prototype.checkBounds = function () {
     if ((this.x + this.size) >= width) {
-        this.x -= -this.size;
+        this.x -= this.size;
     }
 
     if ((this.x - this.size) <= 0) {
