@@ -10,6 +10,7 @@ var height = canvas.height = window.innerHeight;
 let count = document.querySelector('p'); // Selects the <p>
 
 let ballNum = 0; // Keeps count of the number of balls
+// let anSpeed = 0.25; // Animation speed variable, trying to set it so that it could change when balls = 0
 
 // function to generate random number
 
@@ -164,7 +165,7 @@ while (balls.length < 25) { // Change to add more balls
     ballNum++;
 }
 
-var evilCircle = new EvilCircle(700, 400, 20, 20, true, 'red', 10);
+var evilCircle = new EvilCircle(100, 100, 20, 20, true, 'red', 10); // First two numbers = where the ball starts
 evilCircle.setControls();
 
 function loop() {
